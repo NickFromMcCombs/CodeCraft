@@ -12,20 +12,37 @@ import { createTheme, ThemeProvider, CssBaseline, Container, Box } from '@mui/ma
 const theme = createTheme({
   palette: {
     mode: 'dark',
-    primary: { main: '#a34700' },
-    secondary: { main: '#5a2a82' },
-    background: { default: '#121212', paper: '#ffffff' },
-    text: { primary: '#f5f5f5', secondary: '#c7c7c7' }
+    primary: { main: '#34495e', light: '#5d6d7e', dark: '#25313d' },
+    secondary: { main: '#ffb347', dark: '#e69118' },
+    success: { main: '#2ecc71' },
+    error: { main: '#e74c3c' },
+    background: { default: '#12161c', paper: '#ffffff' },
+    text: { primary: '#f5f7fa', secondary: '#c2c9d0' }
+  },
+  typography: {
+    fontFamily: 'system-ui, Avenir, Helvetica, Arial, sans-serif'
   },
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 14,
           padding: '1.25rem',
           backgroundImage: 'none',
           color: '#1f1f1f'
         }
+      }
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          background: 'linear-gradient(90deg,#25313d,#34495e)'
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: { textTransform: 'none', fontWeight: 500 }
       }
     }
   }

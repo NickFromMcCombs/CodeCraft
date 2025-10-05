@@ -28,7 +28,7 @@ app.get('/api/health', (req,res)=>res.json({ status: 'ok'}));
 
 app.get('/api/employees', async (req,res) => {
   try {
-    const [rows] = await pool.query('SELECT id, first_name, last_name, email FROM Employees ORDER BY id DESC');
+    const [rows] = await pool.query('SELECT id, first_name, last_name, email, birthdate, salary FROM Employees ORDER BY id DESC');
     res.json(rows);
   } catch(err){
     console.error(err);
@@ -37,10 +37,16 @@ app.get('/api/employees', async (req,res) => {
 });
 
 app.post('/api/employees', async (req,res) => {
-  const { first_name, last_name, email } = req.body;
+  const { first_name, last_name, email, birthdate = null, salary = 0 } = req.body || {};
+  if(!first_name || !last_name || !email){
+    return res.status(400).json({ error: 'first_name, last_name, email are required'});
+  }
   try {
-    const [result] = await pool.query('INSERT INTO Employees (first_name, last_name, email) VALUES (?,?,?)', [first_name, last_name, email]);
-    res.status(201).json({ id: result.insertId, first_name, last_name, email });
+    const [result] = await pool.query(
+      'INSERT INTO Employees (first_name, last_name, email, birthdate, salary) VALUES (?,?,?,?,?)',
+      [first_name.trim(), last_name.trim(), email.trim(), birthdate || null, Number(salary)||0]
+    );
+    res.status(201).json({ id: result.insertId, first_name, last_name, email, birthdate, salary: Number(salary)||0 });
   } catch(err){
     console.error(err);
     res.status(500).json({ error: 'Failed to create employee'});
@@ -49,10 +55,16 @@ app.post('/api/employees', async (req,res) => {
 
 app.put('/api/employees/:id', async (req,res) => {
   const { id } = req.params;
-  const { first_name, last_name, email } = req.body;
+  const { first_name, last_name, email, birthdate = null, salary = 0 } = req.body || {};
+  if(!first_name || !last_name || !email){
+    return res.status(400).json({ error: 'first_name, last_name, email are required'});
+  }
   try {
-    await pool.query('UPDATE Employees SET first_name=?, last_name=?, email=? WHERE id=?', [first_name, last_name, email, id]);
-    res.json({ id: Number(id), first_name, last_name, email });
+    await pool.query(
+      'UPDATE Employees SET first_name=?, last_name=?, email=?, birthdate=?, salary=? WHERE id=?',
+      [first_name.trim(), last_name.trim(), email.trim(), birthdate || null, Number(salary)||0, id]
+    );
+    res.json({ id: Number(id), first_name, last_name, email, birthdate, salary: Number(salary)||0 });
   } catch(err){
     console.error(err);
     res.status(500).json({ error: 'Failed to update employee'});
