@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid2';
 import { AppContext } from '../context/AppContext';
+import cheersImg from '../assets/cheers.png';
+import groupPhotoImg from '../assets/group-photo.png';
 
 const Home = () => {
   const { setWelcomeName } = useContext(AppContext);
@@ -41,10 +43,10 @@ const Home = () => {
           </Typography>
           <Grid container spacing={2} sx={{ mb: 1 }}>
             <Grid size={{ xs:12, sm:6, md:4 }}>
-              <Box component="img" src="https://placehold.co/300x180" alt="Event 1" sx={{ width: '100%', borderRadius: 3 }} />
+              <Box component="img" src={cheersImg} alt="Team celebrating with a cheers" sx={{ width: '100%', borderRadius: 3, objectFit: 'cover' }} />
             </Grid>
             <Grid size={{ xs:12, sm:6, md:4 }}>
-              <Box component="img" src="https://placehold.co/300x180" alt="Event 2" sx={{ width: '100%', borderRadius: 3 }} />
+              <Box component="img" src={groupPhotoImg} alt="Company group photo" sx={{ width: '100%', borderRadius: 3, objectFit: 'cover' }} />
             </Grid>
           </Grid>
         </Paper>
